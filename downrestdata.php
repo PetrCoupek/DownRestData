@@ -1,6 +1,6 @@
 <?php
 
-/** Commnad line PHP script for download daptial data from the ArcGIS rest API server
+/** Command line PHP script for download daptial data from the ArcGIS rest API server
  *  final GeoJSON could be imported into QGIS using the following approach:
  *  Menu Layer -> add vector layer -> JSON  file -> button Add  .
  *  the class construct parameters

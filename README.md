@@ -1,13 +1,16 @@
 
-# Down Arcg-GIS Rest-API Data
+# Down Rest Data 
 
-Command line PHP script for download spatial data from the ArcGIS rest API server.
+Command line PHP script for download ArcGIS server published vector spatial data from the dynamic ArcGIS REST service.
+The script can be easily used for data mining public avalilable data sources. 
 
-Final GeoJSON could be imported into QGIS using the following approach: Menu Layer -> add vector layer -> JSON  file -> button Add  .
+Final GeoJSON could be imported into QGIS using the following approach: Menu Layer -> add vector layer -> JSON  file -> button Add .
+
+Available data sources can be found using spatial metadata catalogues.
 
 ## class construct parameters
  *  @param string $datasource  - URL path to the ArcGIS mapservice ended wuth /n/ , where n is the layer number
- 
+
  *  @param string $filename - name of the output JSON datafile, without .json postfix
 
  *  @param int $limit - (optional) the maximum of features to be requested in one step / GET request. This is server side limitation for downoading large amout of data at once. It differs amout server instalations. Normally, less than 1000 is set.

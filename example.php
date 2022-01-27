@@ -1,6 +1,7 @@
 <?php
-  /** Example of the call - the calling from the command line:
-   * php -f example.php */ 
+  /** Example can be called from the command line using php engine:
+   * php -f example.php 
+   */ 
 
   include_once "downrestdata.php";
 

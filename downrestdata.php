@@ -1,8 +1,8 @@
 <?php
 
-/** Command line PHP script for download daptial data from the ArcGIS rest API server
+/** Command line PHP tool script for download daptial data from the ArcGIS rest API server
  *  final GeoJSON could be imported into QGIS using the following approach:
- *  Menu Layer -> add vector layer -> JSON  file -> button Add  .
+ *  menu Layer -> add vector layer -> JSON file -> button Add  .
  *  the class construct parameters
  *  @param $datasource  - URL path to the ArcGIS mapservice ended wuth /n/ , where n is the layer number
  *  @param $filename - jmeno vystupniho souboru JSON bez koncovky
@@ -12,19 +12,22 @@
 
 class DownRestData {
 
-  /**
-   * @param string $datasource - the ArcGIS mapservice URL
-   * @param string $filename - the file name for the result json file
-   * @param int $limit - the amount of features per one GET request
-   */
   function __construct(){
      $this->version=1.0;
   }
   
-    /* to obtain all the unique identifiers - typically  objectid's */
+  /**
+   * @param string $datasource - the ArcGIS mapservice URL
+   * @param string $filename - the file name for the result json file
+   * @param int $limit - the amount of features per one GET request
+   * result is stored as a file on the drive
+   */
+
   function get($datasource,$filename,$limit=990){  
     
     $limit_id=1e10; /* max ID limitation, see below */
+
+    /* let's obtain all the unique identifiers - typically  objectid's */
 
     $req=$datasource.'query?where=1%3D1&geometryType=esriGeometryEnvelope&spatialRel=esriSpatialRelIntersects&returnGeometry=false&'.
      'returnTrueCurves=false&returnIdsOnly=true&returnCountOnly=false&returnZ=false&returnM=false&returnDistinctValues=false&'.
@@ -34,7 +37,7 @@ class DownRestData {
     $ids=$ids['objectIds'];
     echo $id_name,' ',memory_get_usage(true),'/',ini_get('memory_limit'),"\n";
 
-    /* to obtain attribute names */
+    /* let's obtain attribute names */
     $capabilities=json_decode($this->httpRequest($datasource.'?f=json'),true);
     $fields=$capabilities['fields'];
     $outFields='';
@@ -44,7 +47,7 @@ class DownRestData {
      }
     }
   
-    /* lets prepare the requests by not exceeding the maximal number of reatures */
+    /* let's prepare the requests by not exceeding the maximal number of reatures */
     $req=array();
 
     if (count($ids)>$limit){
@@ -69,9 +72,10 @@ class DownRestData {
     unset($ids);
     echo memory_get_usage(true),'/',ini_get('memory_limit'),"\n";
     
-     /* in large datasets, this operation could be easily exhaust the operational memory for the PHP script,
-      * so the individual responses are stored to the disc drive and processed at the end of download
-      */
+    /* in large datasets, this operation could be easily exhaust the operational memory for the PHP script,
+     * so the individual responses are stored to the disc drive and processed at the end of download
+     */
+    
     for($i=0; $i<count($req); $i++){
       $id_from=$req[$i][0];
       $id_to=$req[$i][1];
@@ -91,7 +95,9 @@ class DownRestData {
       unset($f);
     }
 
-    /* kompletace vysledneho souboru je jen manipulace s textovymi soubory - bez naroku na pamet */
+    /* final completation - only as mainpulation with a text files - is less memory 
+     * critical than JSON-object processing 
+     */
     $handle=fopen($filename.'.json','w');
     for($i=0;$i<count($req);$i++){
       fwrite($handle,$this->readpart($filename,$i,$i+1==count($req)));
@@ -123,7 +129,11 @@ class DownRestData {
     }   
   }
 }
-  
+
+/** It saves only downloaded part
+ * @param string $filename
+ * @param string $part - content 
+ */
 function savepart($filename,$part){
   if (!is_dir('tmp')){
     mkdir('tmp');
@@ -142,6 +152,11 @@ function savepart($filename,$part){
   return 0;
 }
 
+/** It reads the strored part
+ * @param string $filename
+ * @param int $index 
+ * @param bool $last
+ */
 function readpart($filename,$index,$last){
   $filename='tmp/'.$filename.'_'.$index.'.json';
   $tmp=json_decode(file_get_contents($filename),true);
@@ -163,7 +178,12 @@ function readpart($filename,$index,$last){
   return $ret;
 } 
 
+/**
+ * @param array $tree JSON string
+ * @return string  
+ */
 function json_part($tree){
+  
   $ret=substr(json_encode($tree,
   JSON_PRETTY_PRINT + 
   JSON_UNESCAPED_SLASHES + 

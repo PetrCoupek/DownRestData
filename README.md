@@ -20,6 +20,19 @@ Available data sources can be found using spatial metadata catalogues.
 
  See, modify or run the example.php file from the command line using the command
 
+```
+
  php -f example.php
 
+``` 
 
+
+```PHP
+
+include_once "downrestdata.php";
+
+  $g=new DownRestData();
+  $g->get('https://gis.nature.cz/arcgis/rest/services/UzemniOchrana/ChranUzemi/MapServer/0/',
+          'maloplosne');
+
+``` 

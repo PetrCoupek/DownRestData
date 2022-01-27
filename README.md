@@ -8,7 +8,7 @@ Final GeoJSON could be imported into QGIS using the following approach: Menu Lay
 
 Available data sources can be found using spatial metadata catalogues.
 
-## get mathod parameters
+## get method parameters
  *  **$datasource** *string* - URL path to the ArcGIS mapservice ended wuth /n/ , where n is the layer number
 
  *  **$filename** *string* - name of the output JSON datafile, without .json postfix

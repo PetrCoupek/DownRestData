@@ -1,7 +1,7 @@
 <?php
 
-/** Command line PHP tool script for download daptial data from the ArcGIS rest API server
- *  final GeoJSON could be imported into QGIS using the following approach:
+/** Command line PHP tool script for downloading spatial data from the ArcGIS REST/API server
+ *  final GeoJSON is to be imported into QGIS using the following approach:
  *  menu Layer -> add vector layer -> JSON file -> button Add  .
  *  the class construct parameters
  *  @param $datasource  - URL path to the ArcGIS mapservice ended wuth /n/ , where n is the layer number

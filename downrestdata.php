@@ -220,9 +220,9 @@ function readpart000($filename,$index,$last){
 
 /**
 	 * Process HTTP request.
-	 * @param  string
-	 * @param  string
-	 * @param  string
+	 * @param  string an URL
+	 * @param  string username (opt.)
+	 * @param  string pass (opt.)
 	 * @return string|false
 	 * @throws FeedException
 	 */ 
